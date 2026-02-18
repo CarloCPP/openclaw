@@ -167,6 +167,7 @@ export const TelegramAccountSchemaBase = z
       .strict()
       .optional(),
     proxy: z.string().optional(),
+    apiRoot: z.string().url().optional(),
     webhookUrl: z
       .string()
       .optional()
@@ -413,6 +414,7 @@ export const DiscordAccountSchema = z
     configWrites: z.boolean().optional(),
     token: z.string().optional().register(sensitive),
     proxy: z.string().optional(),
+    apiRoot: z.string().url().optional(),
     allowBots: z.boolean().optional(),
     dangerouslyAllowNameMatching: z.boolean().optional(),
     groupPolicy: GroupPolicySchema.optional().default("allowlist"),

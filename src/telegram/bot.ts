@@ -133,11 +133,14 @@ export function createTelegramBot(opts: TelegramBotOptions) {
     typeof telegramCfg?.timeoutSeconds === "number" && Number.isFinite(telegramCfg.timeoutSeconds)
       ? Math.max(1, Math.floor(telegramCfg.timeoutSeconds))
       : undefined;
+
+  const apiRoot = account.apiRoot;
   const client: ApiClientOptions | undefined =
-    shouldProvideFetch || timeoutSeconds
+    shouldProvideFetch || timeoutSeconds || apiRoot !== "https://api.telegram.org"
       ? {
           ...(shouldProvideFetch && fetchImpl ? { fetch: fetchForClient } : {}),
           ...(timeoutSeconds ? { timeoutSeconds } : {}),
+          ...(apiRoot !== "https://api.telegram.org" ? { apiRoot } : {}),
         }
       : undefined;
 
@@ -421,6 +424,7 @@ export function createTelegramBot(opts: TelegramBotOptions) {
     shouldSkipUpdate,
     processMessage,
     logger,
+    apiRoot: account.apiRoot,
   });
 
   return bot;
