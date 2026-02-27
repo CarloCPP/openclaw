@@ -114,6 +114,7 @@ export const registerTelegramHandlers = ({
   shouldSkipUpdate,
   processMessage,
   logger,
+  apiRoot,
 }: RegisterTelegramHandlerParams) => {
   const DEFAULT_TEXT_FRAGMENT_MAX_GAP_MS = 1500;
   const TELEGRAM_TEXT_FRAGMENT_START_THRESHOLD_CHARS = 4000;
@@ -338,7 +339,7 @@ export const registerTelegramHandlers = ({
       for (const { ctx } of entry.messages) {
         let media;
         try {
-          media = await resolveMedia(ctx, mediaMaxBytes, opts.token, opts.proxyFetch);
+          media = await resolveMedia(ctx, mediaMaxBytes, opts.token, opts.proxyFetch, apiRoot);
         } catch (mediaErr) {
           if (!isRecoverableMediaGroupError(mediaErr)) {
             throw mediaErr;
@@ -443,6 +444,7 @@ export const registerTelegramHandlers = ({
         mediaMaxBytes,
         opts.token,
         opts.proxyFetch,
+        apiRoot,
       );
       if (!media) {
         return [];
@@ -923,7 +925,7 @@ export const registerTelegramHandlers = ({
 
     let media: Awaited<ReturnType<typeof resolveMedia>> = null;
     try {
-      media = await resolveMedia(ctx, mediaMaxBytes, opts.token, opts.proxyFetch);
+      media = await resolveMedia(ctx, mediaMaxBytes, opts.token, opts.proxyFetch, apiRoot);
     } catch (mediaErr) {
       if (isMediaSizeLimitError(mediaErr)) {
         if (sendOversizeWarning) {

@@ -21,6 +21,7 @@ type TelegramMessageProcessorDeps = Omit<
   streamMode: TelegramStreamMode;
   textLimit: number;
   opts: Pick<TelegramBotOptions, "token">;
+  apiRoot: string;
 };
 
 export const createTelegramMessageProcessor = (deps: TelegramMessageProcessorDeps) => {
